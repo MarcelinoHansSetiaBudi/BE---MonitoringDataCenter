@@ -14,72 +14,86 @@ class ShiftStaffController extends Controller
      */
     public function index()
     {
-        //
+        $shiftStaff = ShiftStaff::all();
+        return response()->json([
+            'status' => 'success',
+            'data' => $shiftStaff
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function show($id)
     {
-        //
+        $shiftStaff = ShiftStaff::find($id);
+        if (!$shiftStaff) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $shiftStaff
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    // Menambahkan data baru
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'staff_id' => 'required|integer',
+            'shift_id' => 'required|integer',
+        ]);
+
+        $shiftStaff = ShiftStaff::create($validatedData);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $shiftStaff
+        ], 201);
+    }
+     
+
+    // Mengubah data
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'staff_id' => 'sometimes|required|integer',
+            'shift_id' => 'sometimes|required|integer',
+        ]);
+
+        $shiftStaff = ShiftStaff::find($id);
+        if (!$shiftStaff) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data not found'
+            ], 404);
+        }
+
+        $shiftStaff->update($validatedData);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $shiftStaff
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ShiftStaff  $shiftStaff
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ShiftStaff $shiftStaff)
+    // Menghapus data
+    public function destroy($id)
     {
-        //
-    }
+        $shiftStaff = ShiftStaff::find($id);
+        if (!$shiftStaff) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data not found'
+            ], 404);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\ShiftStaff  $shiftStaff
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ShiftStaff $shiftStaff)
-    {
-        //
-    }
+        $shiftStaff->delete();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ShiftStaff  $shiftStaff
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ShiftStaff $shiftStaff)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\ShiftStaff  $shiftStaff
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ShiftStaff $shiftStaff)
-    {
-        //
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data deleted successfully'
+        ]);
     }
 }

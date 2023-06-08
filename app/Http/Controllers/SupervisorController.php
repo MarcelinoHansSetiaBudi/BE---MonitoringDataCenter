@@ -14,72 +14,88 @@ class SupervisorController extends Controller
      */
     public function index()
     {
-        //
+        $supervisor = Supervisor::all();
+        return response()->json([
+            'status' => 'success',
+            'data' => $supervisor
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function show($id)
     {
-        //
+        $supervisor = Supervisor::find($id);
+        if (!$supervisor) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $supervisor
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    // Menambahkan data baru
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'report_id' => 'required|integer',
+            'feedback' => 'required|string'
+        ]);
+
+        $supervisor = Supervisor::create($validatedData);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $supervisor
+        ], 201);
+    }
+     
+
+    // Mengubah data
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'name' => 'sometimes|required',
+            'report_id' => 'sometimes|required|integer',
+            'feedback' => 'sometimes|required|string'
+        ]);
+
+        $supervisor = Supervisor::find($id);
+        if (!$supervisor) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data not found'
+            ], 404);
+        }
+
+        $supervisor->update($validatedData);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $supervisor
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Supervisor  $supervisor
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Supervisor $supervisor)
+    // Menghapus data
+    public function destroy($id)
     {
-        //
-    }
+        $supervisor = Supervisor::find($id);
+        if (!$supervisor) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data not found'
+            ], 404);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Supervisor  $supervisor
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Supervisor $supervisor)
-    {
-        //
-    }
+        $supervisor->delete();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Supervisor  $supervisor
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Supervisor $supervisor)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Supervisor  $supervisor
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Supervisor $supervisor)
-    {
-        //
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data deleted successfully'
+        ]);
     }
 }

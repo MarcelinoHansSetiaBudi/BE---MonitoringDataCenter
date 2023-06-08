@@ -14,72 +14,86 @@ class ShiftController extends Controller
      */
     public function index()
     {
-        //
+        $shift = Shift::all();
+        return response()->json([
+            'status' => 'success',
+            'data' => $shift
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function show($id)
     {
-        //
+        $shift = Shift::find($id);
+        if (!$shift) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $shift
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    // Menambahkan data baru
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'shift_start' => 'required',
+            'shift_end' => 'required',
+        ]);
+
+        $shift = Shift::create($validatedData);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $shift
+        ], 201);
+    }
+     
+
+    // Mengubah data
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'shift_start' => 'sometimes|required',
+            'shift_end' => 'sometimes|required',
+        ]);
+
+        $shift = Shift::find($id);
+        if (!$shift) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data not found'
+            ], 404);
+        }
+
+        $shift->update($validatedData);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $shift
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Shift  $shift
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Shift $shift)
+    // Menghapus data
+    public function destroy($id)
     {
-        //
-    }
+        $shift = Shift::find($id);
+        if (!$shift) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data not found'
+            ], 404);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Shift  $shift
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Shift $shift)
-    {
-        //
-    }
+        $shift->delete();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Shift  $shift
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Shift $shift)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Shift  $shift
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Shift $shift)
-    {
-        //
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data deleted successfully'
+        ]);
     }
 }

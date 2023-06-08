@@ -14,72 +14,90 @@ class DataStaffController extends Controller
      */
     public function index()
     {
-        //
+        $dataStaff = DataStaff::all();
+        return response()->json([
+            'status' => 'success',
+            'data' => $dataStaff
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function show($id)
     {
-        //
+        $dataStaff = DataStaff::find($id);
+        if (!$dataStaff) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $dataStaff
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    // Menambahkan data baru
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'address' => 'required',
+            'phone' => 'required',
+            'email' => 'required|unique:data_staff,email'
+        ]);
+
+        $dataStaff = DataStaff::create($validatedData);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $dataStaff
+        ], 201);
+    }
+     
+
+    // Mengubah data
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'name' => 'sometimes|required',
+            'address' => 'sometimes|required',
+            'phone' => 'sometimes|required',
+            'email' => 'sometimes|required'
+        ]);
+
+        $dataStaff = DataStaff::find($id);
+        if (!$dataStaff) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data not found'
+            ], 404);
+        }
+
+        $dataStaff->update($validatedData);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $dataStaff
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\DataStaff  $dataStaff
-     * @return \Illuminate\Http\Response
-     */
-    public function show(DataStaff $dataStaff)
+    // Menghapus data
+    public function destroy($id)
     {
-        //
-    }
+        $dataStaff = DataStaff::find($id);
+        if (!$dataStaff) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data not found'
+            ], 404);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\DataStaff  $dataStaff
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(DataStaff $dataStaff)
-    {
-        //
-    }
+        $dataStaff->delete();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\DataStaff  $dataStaff
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, DataStaff $dataStaff)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\DataStaff  $dataStaff
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(DataStaff $dataStaff)
-    {
-        //
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data deleted successfully'
+        ]);
     }
 }

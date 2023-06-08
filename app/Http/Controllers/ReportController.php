@@ -14,72 +14,90 @@ class ReportController extends Controller
      */
     public function index()
     {
-        //
+        $report = Report::all();
+        return response()->json([
+            'status' => 'success',
+            'data' => $report
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function show($id)
     {
-        //
+        $report = Report::find($id);
+        if (!$report) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $report
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    // Menambahkan data baru
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'shift_staff_id' => 'required|integer',
+            'product_id' => 'required|integer',
+            'status' => 'required',
+            'maintenance_date' => 'required|date'
+        ]);
+
+        $report = Report::create($validatedData);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $report
+        ], 201);
+    }
+     
+
+    // Mengubah data
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'shift_staff_id' => 'sometimes|required|integer',
+            'product_id' => 'sometimes|required|integer',
+            'status' => 'required',
+            'maintenance_date' => 'required|date'
+        ]);
+
+        $report = Report::find($id);
+        if (!$report) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data not found'
+            ], 404);
+        }
+
+        $report->update($validatedData);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $report
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Report $report)
+    // Menghapus data
+    public function destroy($id)
     {
-        //
-    }
+        $report = Report::find($id);
+        if (!$report) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data not found'
+            ], 404);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Report $report)
-    {
-        //
-    }
+        $report->delete();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Report $report)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Report $report)
-    {
-        //
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data deleted successfully'
+        ]);
     }
 }
