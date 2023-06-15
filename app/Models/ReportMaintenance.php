@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Report extends Model
+class ReportMaintenance extends Model
 {
     use HasFactory;
-
-    protected $table = 'report';
+    protected $table = 'report_maintenance';
 
     protected $fillable = [
         'shift_staff_id',
         'product_id',
-        'status',
+        'repair_status',
+        'server_status',
         'maintenance_date'
     ];
 }

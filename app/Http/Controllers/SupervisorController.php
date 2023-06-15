@@ -42,7 +42,7 @@ class SupervisorController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required',
-            'report_id' => 'required|integer',
+            'report_monitoring_id' => 'required|integer',
             'feedback' => 'required|string'
         ]);
 
@@ -60,7 +60,7 @@ class SupervisorController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'sometimes|required',
-            'report_id' => 'sometimes|required|integer',
+            'report_monitoring_id' => 'sometimes|required|integer',
             'feedback' => 'sometimes|required|string'
         ]);
 

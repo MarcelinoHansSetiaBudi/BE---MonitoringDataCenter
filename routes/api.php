@@ -3,11 +3,11 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DataStaffController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReportMonitoringController;
+use App\Http\Controllers\ReportMaintenanceController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\ShiftStaffController;
 use App\Http\Controllers\SupervisorController;
-use App\Models\Supervisor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -60,22 +60,39 @@ Route::group([
     Route::get('product', [ProductController::class, 'index']);
     Route::post('product', [ProductController::class, 'store']);
     Route::get('product/{id}', [ProductController::class, 'show']);
+    Route::get('product-total-aktif', [ProductController::class, 'getTotalActiveServerByStatus']);
     Route::put('product/{id}', [ProductController::class, 'update']);
     Route::delete('product/{id}', [ProductController::class, 'destroy']);
 
 });
 
-// Report
+// Report Monitoring
 Route::group([
     'middleware' => ['api', 'jwt.auth'],
 
 ], function ($router) {
 
-    Route::get('report', [ReportController::class, 'index']);
-    Route::post('report', [ReportController::class, 'store']);
-    Route::get('report/{id}', [ReportController::class, 'show']);
-    Route::put('report/{id}', [ReportController::class, 'update']);
-    Route::delete('report/{id}', [ReportController::class, 'destroy']);
+    Route::get('report-monitoring', [ReportMonitoringController::class, 'index']);
+    Route::post('report-monitoring', [ReportMonitoringController::class, 'store']);
+    Route::get('report-monitoring/{id}', [ReportMonitoringController::class, 'show']);
+    Route::get('report-monitoring-total', [ReportMonitoringController::class, 'count']);
+    Route::put('report-monitoring/{id}', [ReportMonitoringController::class, 'update']);
+    Route::delete('report-monitoring/{id}', [ReportMonitoringController::class, 'destroy']);
+
+});
+
+// Report Maintenance
+Route::group([
+    'middleware' => ['api', 'jwt.auth'],
+
+], function ($router) {
+
+    Route::get('report-maintenance', [ReportMaintenanceController::class, 'index']);
+    Route::post('report-maintenance', [ReportMaintenanceController::class, 'store']);
+    Route::get('report-maintenance/{id}', [ReportMaintenanceController::class, 'show']);
+    Route::get('report-maintenance-total', [ReportMaintenanceController::class, 'count']);
+    Route::put('report-maintenance/{id}', [ReportMaintenanceController::class, 'update']);
+    Route::delete('report-maintenance/{id}', [ReportMaintenanceController::class, 'destroy']);
 
 });
 

@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('supervisor', function (Blueprint $table) {
-            $table->unsignedBigInteger('report_id')->after('name')->nullable();
-            $table->foreign('report_id')->references('id')->on('report')->onDelete('restrict');
+            $table->unsignedBigInteger('report_monitoring_id')->after('name')->nullable();
+            $table->foreign('report_monitoring_id')->references('id')->on('report_monitoring')->onDelete('restrict');
         });
     }
 
@@ -27,8 +27,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('supervisor', function (Blueprint $table) {
-            $table->dropForeign(['report_id']);
-            $table->dropColumn('report_id');
+            $table->dropForeign(['report_monitoring_id']);
+            $table->dropColumn('report_monitoring_id');
         });
     }
 };

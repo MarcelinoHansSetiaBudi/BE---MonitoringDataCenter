@@ -13,6 +13,9 @@ class Product extends Model
 
     protected $fillable = [
         'name',
+        'brand',
+        'ram',
+        'processor',
         'status',
         'installation_date'
     ];

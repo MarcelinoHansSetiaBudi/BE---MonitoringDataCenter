@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Report;
+use App\Models\ReportMonitoring;
 use Illuminate\Http\Request;
 
-class ReportController extends Controller
+class ReportMonitoringController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $report = Report::all();
+        $report = ReportMonitoring::all();
         return response()->json([
             'status' => 'success',
             'data' => $report
@@ -23,7 +23,7 @@ class ReportController extends Controller
 
     public function show($id)
     {
-        $report = Report::find($id);
+        $report = ReportMonitoring::find($id);
         if (!$report) {
             return response()->json([
                 'status' => 'error',
@@ -43,11 +43,12 @@ class ReportController extends Controller
         $validatedData = $request->validate([
             'shift_staff_id' => 'required|integer',
             'product_id' => 'required|integer',
-            'status' => 'required',
-            'maintenance_date' => 'required|date'
+            'server_status' => 'required',
+            'crash_status' => 'required',
+            'monitoring_date' => 'required|date'
         ]);
 
-        $report = Report::create($validatedData);
+        $report = ReportMonitoring::create($validatedData);
 
         return response()->json([
             'status' => 'success',
@@ -62,11 +63,12 @@ class ReportController extends Controller
         $validatedData = $request->validate([
             'shift_staff_id' => 'sometimes|required|integer',
             'product_id' => 'sometimes|required|integer',
-            'status' => 'required',
-            'maintenance_date' => 'required|date'
+            'server_status' => 'sometimes|required',
+            'crash_status' => 'sometimes|required',
+            'monitoring_date' => 'required|date'
         ]);
 
-        $report = Report::find($id);
+        $report = ReportMonitoring::find($id);
         if (!$report) {
             return response()->json([
                 'status' => 'error',
@@ -82,10 +84,19 @@ class ReportController extends Controller
         ]);
     }
 
+    public function count() 
+    {
+        $totalreport = ReportMonitoring::count();
+        return response()->json([
+            'status' => 'success',
+            'total report' => $totalreport
+        ]);
+    }
+
     // Menghapus data
     public function destroy($id)
     {
-        $report = Report::find($id);
+        $report = ReportMonitoring::find($id);
         if (!$report) {
             return response()->json([
                 'status' => 'error',

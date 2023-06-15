@@ -15,5 +15,6 @@ class Supervisor extends Model
         'report_id',
         'name',
         'feedback',
+        'report_monitoring_id'
     ];
 }

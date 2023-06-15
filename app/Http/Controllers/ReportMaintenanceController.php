@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\ReportMaintenance;
 use Illuminate\Http\Request;
+use SebastianBergmann\CodeCoverage\Report\Xml\Report;
 
-class ProductController extends Controller
+class ReportMaintenanceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,17 +15,17 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $product = Product::all();
+        $reportmaintenance = ReportMaintenance::all();
         return response()->json([
             'status' => 'success',
-            'data' => $product
+            'data' => $reportmaintenance
         ]);
     }
 
     public function show($id)
     {
-        $product = Product::find($id);
-        if (!$product) {
+        $reportmaintenance = ReportMaintenance::find($id);
+        if (!$reportmaintenance) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Data not found'
@@ -33,7 +34,7 @@ class ProductController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => $product
+            'data' => $reportmaintenance
         ]);
     }
 
@@ -41,19 +42,18 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required',
-            'brand' => 'required',
-            'ram' => 'required|integer',
-            'processor' => 'required',
-            'status' => 'required',
-            'installation_date' => 'required|date'
+            'shift_staff_id' => 'required|integer',
+            'product_id' => 'required|integer',
+            'repair_status' => 'required',
+            'server_status' => 'required',
+            'maintenance_date' => 'required|date'
         ]);
 
-        $product = Product::create($validatedData);
+        $reportmaintenance = ReportMaintenance::create($validatedData);
 
         return response()->json([
             'status' => 'success',
-            'data' => $product
+            'data' => $reportmaintenance
         ], 201);
     }
      
@@ -62,42 +62,41 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'name' => 'sometimes|required',
-            'brand' => 'sometimes|required',
-            'ram' => 'sometimes|required|integer',
-            'processor' => 'sometimes|required',
-            'status' => 'sometimes|required',
-            'installation_date' => 'sometimes|required|date',
+            'shift_staff_id' => 'sometimes|required|integer',
+            'product_id' => 'sometimes|required|integer',
+            'repair_status' => 'sometimes|required',
+            'server_status' => 'sometimes|required',
+            'maintenance_date' => 'required|date'
         ]);
 
-        $product = Product::find($id);
-        if (!$product) {
+        $reportmaintenance = ReportMaintenance::find($id);
+        if (!$reportmaintenance) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Data not found'
             ], 404);
         }
 
-        $product->update($validatedData);
+        $reportmaintenance->update($validatedData);
 
         return response()->json([
             'status' => 'success',
-            'data' => $product
+            'data' => $reportmaintenance
         ]);
     }
 
     // Menghapus data
     public function destroy($id)
     {
-        $product = Product::find($id);
-        if (!$product) {
+        $reportmaintenance = ReportMaintenance::find($id);
+        if (!$reportmaintenance) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Data not found'
             ], 404);
         }
 
-        $product->delete();
+        $reportmaintenance->delete();
 
         return response()->json([
             'status' => 'success',
@@ -105,14 +104,13 @@ class ProductController extends Controller
         ]);
     }
 
-    public function getTotalActiveServerByStatus()
+    public function count()
     {
-        // Query untuk mendapatkan tim nelayan berdasarkan location_id
-        $dataServer = Product::where('status', 'aktif')->get();
-        $total = $dataServer->count();
+        $total = ReportMaintenance::count();
+
         return response()->json([
             'status' => 'success',
-            'total active server' => $total
+            'total report maintenance' => $total
         ]);
     }
 }
