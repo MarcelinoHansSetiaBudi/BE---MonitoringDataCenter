@@ -12,9 +12,8 @@ class Supervisor extends Model
     protected $table = 'supervisor';
 
     protected $fillable = [
-        'report_id',
         'name',
-        'feedback',
-        'report_monitoring_id'
+        'report_monitoring_id',
+        'feedback'
     ];
 }
