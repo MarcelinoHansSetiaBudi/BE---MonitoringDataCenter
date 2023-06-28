@@ -20,4 +20,14 @@ class Shift extends Model
     {
         return $this->hasMany(ShiftStaff::class);
     }
+
+    public function ReportMaintenance()
+    {
+        return $this->hasMany(ReportMaintenance::class,'report_maintenance_id', 'id');
+    }
+
+    public function ReportMonitoring()
+    {
+        return $this->hasMany(ReportMonitoring::class, 'report_monitoring_id', 'id');
+    }
 }

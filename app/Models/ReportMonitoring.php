@@ -28,4 +28,18 @@ class ReportMonitoring extends Model
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class, 'shift_id', 'id');
+    }
+
+    public function dataStaff()
+    {
+        return $this->belongsTo(DataStaff::class, 'staff_id', 'id');
+    }
+    public function shiftStaff()
+    {
+        return $this->belongsTo(ShiftStaff::class, 'shift_staff_id', 'id');
+    }
 }

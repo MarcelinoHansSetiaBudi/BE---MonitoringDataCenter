@@ -16,9 +16,31 @@ class ReportMaintenanceController extends Controller
     public function index()
     {
         $reportmaintenance = ReportMaintenance::all();
+        $list = [];
+
+        foreach ($reportmaintenance as $data) {
+            $reportmaintenanceData = [
+                'id' => $data->id,
+                'shift_staff_id' => $data->shift_staff_id,
+                'staff_id' => $data->shiftStaff->staff_id,
+                'name_staff' => $data->shiftStaff->dataStaff->name,
+                'shift_id' => $data->shiftStaff->shift_id,
+                'shift_start' => $data->shiftStaff->shift->shift_start,
+                'shift_end' => $data->shiftStaff->shift->shift_end,
+                'product_id' => $data->product_id,
+                'name_product' => $data->product->name,
+                'repair_status' => $data->repair_status,
+                'server_status' => $data->servet_status,
+                'maintenance_date' => $data->maintenance_date
+
+            ];
+
+            $list[] = $reportmaintenanceData;
+    }
+    
         return response()->json([
             'status' => 'success',
-            'data' => $reportmaintenance
+            'data' => $list
         ]);
     }
 
@@ -32,9 +54,27 @@ class ReportMaintenanceController extends Controller
             ], 404);
         }
 
+        $reportmaintenanceData = [
+            'id' => $reportmaintenance->id,
+            'shift_staff_id' => $reportmaintenance->shift_staff_id,
+            'staff_id' => $reportmaintenance->shiftStaff->staff_id,
+            'name_staff' => $reportmaintenance->shiftStaff->dataStaff->name,
+            'shift_id' => $reportmaintenance->shiftStaff->shift_id,
+            'shift_start' => $reportmaintenance->shiftStaff->shift->shift_start,
+            'shift_end' => $reportmaintenance->shiftStaff->shift->shift_end,
+            'product_id' => $reportmaintenance->product_id,
+            'name_product' => $reportmaintenance->product->name,
+            'repair_status' => $reportmaintenance->repair_status,
+            'server_status' => $reportmaintenance->servet_status,
+            'maintenance_date' => $reportmaintenance->maintenance_date
+
+        ];
+
+        $list[] = $reportmaintenanceData;
+
         return response()->json([
             'status' => 'success',
-            'data' => $reportmaintenance
+            'data' => $list
         ]);
     }
 

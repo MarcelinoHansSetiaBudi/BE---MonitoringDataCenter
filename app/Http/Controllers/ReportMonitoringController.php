@@ -14,26 +14,66 @@ class ReportMonitoringController extends Controller
      */
     public function index()
     {
-        $report = ReportMonitoring::all();
+        $reportMonitoring = ReportMonitoring::all();
+        $list = [];
+
+        foreach ($reportMonitoring as $data) {
+            $reportmonitoringData = [
+                'id' => $data->id,
+                'shift_staff_id' => $data->shift_staff_id,
+                'staff_id' => $data->shiftStaff->staff_id,
+                'name_staff' => $data->shiftStaff->dataStaff->name,
+                'shift_id' => $data->shiftStaff->shift_id,
+                'shift_start' => $data->shiftStaff->shift->shift_start,
+                'shift_end' => $data->shiftStaff->shift->shift_end,
+                'product_id' => $data->product_id,
+                'name_product' => $data->product->name,
+                'server_status' => $data->server_status,
+                'crash_status' => $data->crash_status,
+                'maintenance_date' => $data->monitoring_date
+
+            ];
+
+            $list[] = $reportmonitoringData;
+    }
+    
         return response()->json([
             'status' => 'success',
-            'data' => $report
+            'data' => $list
         ]);
     }
 
     public function show($id)
     {
-        $report = ReportMonitoring::find($id);
-        if (!$report) {
+        $reportmonitoring = ReportMonitoring::find($id);
+        if (!$reportmonitoring) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Data not found'
             ], 404);
         }
 
+        $reportmonitoringData = [
+            'id' => $reportmonitoring->id,
+            'shift_staff_id' => $reportmonitoring->shift_staff_id,
+            'staff_id' => $reportmonitoring->shiftStaff->staff_id,
+            'name_staff' => $reportmonitoring->shiftStaff->dataStaff->name,
+            'shift_id' => $reportmonitoring->shiftStaff->shift_id,
+            'shift_start' => $reportmonitoring->shiftStaff->shift->shift_start,
+            'shift_end' => $reportmonitoring->shiftStaff->shift->shift_end,
+            'product_id' => $reportmonitoring->product_id,
+            'name_product' => $reportmonitoring->product->name,
+            'server_status' => $reportmonitoring->server_status,
+            'crash_status' => $reportmonitoring->crash_status,
+            'monitoring_date' => $reportmonitoring->monitoring_date
+
+        ];
+
+        $list[] = $reportmonitoringData;
+
         return response()->json([
             'status' => 'success',
-            'data' => $report
+            'data' => $list
         ]);
     }
 
