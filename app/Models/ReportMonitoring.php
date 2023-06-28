@@ -18,4 +18,14 @@ class ReportMonitoring extends Model
         'crash_status',
         'monitoring_date'
     ];
+
+    public function supervisor()
+    {
+        return $this->hasMany(Supervisor::class, 'supervisor_id', 'id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
 }

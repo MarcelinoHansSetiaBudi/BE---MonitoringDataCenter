@@ -16,4 +16,8 @@ class Supervisor extends Model
         'report_monitoring_id',
         'feedback'
     ];
+    public function reportMonitoring()
+    {
+        return $this->belongsTo(ReportMonitoring::class, 'report_monitoring_id', 'id');
+    }
 }

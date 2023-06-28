@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use SebastianBergmann\CodeCoverage\Report\Xml\Report;
 
 class Product extends Model
 {
@@ -19,4 +20,9 @@ class Product extends Model
         'status',
         'installation_date'
     ];
+
+    public function ReportMonitoring()
+    {
+        return $this->hasMany(ReportMonitoring::class, 'report_monitoring_id', 'id');
+    }
 }

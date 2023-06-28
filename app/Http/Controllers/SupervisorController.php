@@ -15,9 +15,24 @@ class SupervisorController extends Controller
     public function index()
     {
         $supervisor = Supervisor::all();
+        $list = [];
+        foreach ($supervisor as $data) {
+                $supervisorData = [
+                    'id' => $data->id,
+                    'name_supervisor' => $data->name,
+                    'report_monitoring_id' => $data->report_monitoring_id,
+                    'product_id' => $data->reportMonitoring->product_id,
+                    'name_product' => $data->reportMonitoring->product->name,
+                    'crash_status' => $data->reportMonitoring->crash_status,
+                    'feedback' => $data->feedback
+                ];
+    
+                $list[] = $supervisorData;
+        }
+    
         return response()->json([
             'status' => 'success',
-            'data' => $supervisor
+            'data' => $list
         ]);
     }
 
@@ -31,9 +46,21 @@ class SupervisorController extends Controller
             ], 404);
         }
 
+        $supervisorData = [
+            'id' => $supervisor->id,
+            'name_supervisor' => $supervisor->name,
+            'report_monitoring_id' => $supervisor->report_monitoring_id,
+            'product_id' => $supervisor->reportMonitoring->product_id,
+            'name_product' => $supervisor->reportMonitoring->product->name,
+            'crash_status' => $supervisor->reportMonitoring->crash_status,
+            'feedback' => $supervisor->feedback
+        ];
+
+        $list[] = $supervisorData;
+
         return response()->json([
             'status' => 'success',
-            'data' => $supervisor
+            'data' => $list
         ]);
     }
 
