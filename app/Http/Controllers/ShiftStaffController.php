@@ -15,12 +15,31 @@ class ShiftStaffController extends Controller
     public function index()
     {
         $shiftStaff = ShiftStaff::all();
+        $list = [];
+    
+        foreach ($shiftStaff as $data) {
+            if ($data->dataStaff) {
+                $name = $data->dataStaff->name;
+    
+                $shiftData = [
+                    'id' => $data->id,
+                    'staff_id' => $data->staff_id,
+                    'name' => $name,
+                    'shift_id' => $data->shift_id,
+                    'shift_start' => $data->shift->shift_start,
+                    'shift_end' => $data->shift->shift_end
+                ];
+    
+                $list[] = $shiftData;
+            }
+        }
+    
         return response()->json([
             'status' => 'success',
-            'data' => $shiftStaff
+            'data' => $list
         ]);
     }
-
+    
     public function show($id)
     {
         $shiftStaff = ShiftStaff::find($id);
@@ -30,10 +49,22 @@ class ShiftStaffController extends Controller
                 'message' => 'Data not found'
             ], 404);
         }
+        $name = $shiftStaff->dataStaff->name;
+
+        $shiftStaffData = [
+            'id' => $shiftStaff->id,
+            'staff_id' => $shiftStaff->staff_id,
+            'name' => $name,
+            'shift_id' => $shiftStaff->shift_id,
+            'shift_start' => $shiftStaff->shift->shift_start,
+            'shift_end' => $shiftStaff->shift->shift_end
+        ];
+
+        $data[] = $shiftStaffData;
 
         return response()->json([
             'status' => 'success',
-            'data' => $shiftStaff
+            'data' => $data
         ]);
     }
 

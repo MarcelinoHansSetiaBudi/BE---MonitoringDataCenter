@@ -15,4 +15,14 @@ class ShiftStaff extends Model
         'staff_id',
         'shift_id'
     ];
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class);
+    }
+
+    public function dataStaff()
+    {
+        return $this->belongsTo(DataStaff::class, 'staff_id', 'id');
+    }
 }

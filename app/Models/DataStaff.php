@@ -17,4 +17,9 @@ class DataStaff extends Model
         'phone',
         'email'
     ];
+
+    public function shiftStaff()
+    {
+        return $this->hasMany(ShiftStaff::class, 'shift_staff_id', 'id');
+    }
 }
