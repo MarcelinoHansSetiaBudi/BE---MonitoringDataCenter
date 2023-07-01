@@ -26,6 +26,7 @@ class ShiftStaffController extends Controller
                     'staff_id' => $data->staff_id,
                     'name' => $name,
                     'shift_id' => $data->shift_id,
+                    'shift_name' => $data->shift->shift_name,
                     'shift_start' => $data->shift->shift_start,
                     'shift_end' => $data->shift->shift_end
                 ];
@@ -56,6 +57,7 @@ class ShiftStaffController extends Controller
             'staff_id' => $shiftStaff->staff_id,
             'name' => $name,
             'shift_id' => $shiftStaff->shift_id,
+            'shift_name' => $shiftStaff->shift->shift_name,
             'shift_start' => $shiftStaff->shift->shift_start,
             'shift_end' => $shiftStaff->shift->shift_end
         ];

@@ -41,6 +41,7 @@ class ShiftController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'shift_name' => 'required|string|unique:shift,shift_name',
             'shift_start' => 'required',
             'shift_end' => 'required',
         ]);
@@ -58,6 +59,7 @@ class ShiftController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
+            'shift_name' => 'sometimes|required|string|unique:shift,shift_name',
             'shift_start' => 'sometimes|required',
             'shift_end' => 'sometimes|required',
         ]);
