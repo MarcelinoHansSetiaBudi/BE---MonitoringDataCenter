@@ -78,7 +78,7 @@ Route::group([
     Route::get('report-monitoring-total', [ReportMonitoringController::class, 'count']);
     Route::put('report-monitoring/{id}', [ReportMonitoringController::class, 'update']);
     Route::delete('report-monitoring/{id}', [ReportMonitoringController::class, 'destroy']);
-
+ 
 });
 
 // Report Maintenance
@@ -135,5 +135,4 @@ Route::group([
     Route::get('supervisor/{id}', [SupervisorController::class, 'show']);
     Route::put('supervisor/{id}', [SupervisorController::class, 'update']);
     Route::delete('supervisor/{id}', [SupervisorController::class, 'destroy']);
-
 });

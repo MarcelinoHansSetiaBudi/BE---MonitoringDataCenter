@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::table('report_maintenance', function (Blueprint $table) {
             $table->unsignedBigInteger('shift_staff_id')->after('id')->nullable();
-            $table->foreign('shift_staff_id')->references('id')->on('shift_staff');
+            $table->foreign('shift_staff_id')->references('id')->on('shift_staff')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('product_id')->after('shift_staff_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('product');
+            $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
